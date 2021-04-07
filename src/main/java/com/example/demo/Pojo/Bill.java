@@ -13,6 +13,7 @@ public class Bill{
     private int bill;
     private String message;
     @JsonFormat(pattern="yyyy年MM月dd日 HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
     public Bill(int id, String name, int bill, String message, Date time){
         this.id = id;

@@ -5,6 +5,8 @@ import com.example.demo.Pojo.Bill;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,5 +39,22 @@ public class TestController {
         //System.out.println("delete "+list.get(id - 1));
         list.remove(toDeleteId - 1);
         return "success";
+    }
+    @PostMapping("addBill")
+    public String addBill(@RequestParam("id") int id,
+                          @RequestParam("bill") int bill,
+                          @RequestParam("name") String name,
+                          @RequestParam("message") String message,
+                          @RequestParam("time") String time) throws ParseException {
+        System.out.println(id);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = simpleDateFormat.parse(time);
+        Bill newBill = new Bill(id,name,bill,message,date);
+        System.out.println("addBill-"+newBill);
+        if(newBill != null){
+            list.add(newBill);
+            return "success";
+        }
+        return "failed";
     }
 }
