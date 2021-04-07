@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserBillsMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Bill">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="bill" jdbcType="INTEGER" property="bill"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="year" jdbcType="INTEGER" property="year"/>
+        <result column="month" jdbcType="INTEGER" property="month"/>
+        <result column="day" jdbcType="INTEGER" property="day"/>
+    </resultMap>
+
+    <select id="getAllBillsByTime" resultMap="BaseResultMap" >
+        select *  from billsrecord
+        where year = #{year } and month = #{month }
+    </select>
+
+    <delete id="deleteBillById" parameterType="java.lang.Integer">
+        delete from billsrecord
+        where id = #{id}
+    </delete>
+
+    <insert id="insertBill" parameterType="com.example.demo.pojo.Bill">
+        insert into billsrecord values (null,#{name},#{bill},#{message},#{year},#{month},#{day})
+    </insert>
+
+    <select id="getMonthSum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select sum(bill)
+        from billsrecord
+        where year = #{year} and month = #{month}
+        group by year,month
+    </select>
+</mapper>
