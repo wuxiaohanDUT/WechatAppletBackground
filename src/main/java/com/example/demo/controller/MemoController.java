@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping("user1")
+@RequestMapping("user2")
 public class MemoController {
 
     /**
