@@ -12,9 +12,9 @@ public interface UserBillsMapper {
 
     List<Bill> getAllBillsByTime(@Param("year") Integer year, @Param("month") Integer month);
 
-    int deleteBillById(Integer id);
+    Integer deleteBillById(Integer id);
 
-    int insertBill(Bill bill);
+    Integer insertBill(Bill bill);
 
     Integer getMonthSum(@Param("year") Integer year, @Param("month") Integer month);
 }

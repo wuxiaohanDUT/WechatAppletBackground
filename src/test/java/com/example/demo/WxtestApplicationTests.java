@@ -1,7 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.dao.UserBillsMapper;
+import com.example.demo.dao.UserMemoMapper;
 import com.example.demo.pojo.Bill;
+import com.example.demo.pojo.Memo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
@@ -22,6 +24,9 @@ class WxtestApplicationTests {
 
     @Resource
     private UserBillsMapper userBillsMapper;
+
+    @Resource
+    private UserMemoMapper userMemoMapper;
     @Test
     void contextLoads() {
         Date now = new Date();
@@ -56,5 +61,11 @@ class WxtestApplicationTests {
                 System.out.println(n);
             }
         }
+    }
+
+    @Test
+    void test5(){
+        Memo memo = new Memo(0,2021, 4, 8, "title", "content", true);
+        userMemoMapper.insertMemo(memo);
     }
 }
