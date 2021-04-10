@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dao.UserMemoMapper;
 import com.example.demo.pojo.Memo;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,13 +13,17 @@ import java.util.List;
 @RequestMapping("user2")
 public class MemoController {
 
+    @Resource
+    private UserMemoMapper userMemoMapper;
+
     /**
      * 获取到所有的备忘录
      * @return
      */
     @GetMapping("getAllMemos")
     public List<Memo> getAllMemos(){
-        return new LinkedList<>();
+        System.out.println("getAllMemos");
+        return userMemoMapper.getAllMemos();
     }
 
     /**
@@ -27,7 +33,10 @@ public class MemoController {
      */
     @PostMapping("addMemo")
     public String addMemo(@RequestBody Memo memo){
-        return "success";
+        if(userMemoMapper.insertMemo(memo) > 0){
+            return "success";
+        }
+        return "failed";
     }
 
     /**
@@ -35,7 +44,25 @@ public class MemoController {
      * @param memo
      * @return
      */
+    @PostMapping("updateMemo")
     public String updateMemo(@RequestBody Memo memo){
-        return "success";
+        System.out.println("updateMemo "+memo);
+        if(userMemoMapper.updateMemo(memo) > 0){
+            return "success";
+        }
+        return "failed";
+    }
+
+    /**
+     * 删除一条备忘录
+     * @param id
+     * @return
+     */
+    @GetMapping("deleteMemo")
+    public String deleteMemo(@RequestParam("id") Integer id){
+        if(userMemoMapper.deleteMemo(id) > 0){
+            return "success";
+        }
+        return "failed";
     }
 }

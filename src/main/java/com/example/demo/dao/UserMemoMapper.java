@@ -10,4 +10,5 @@ public interface UserMemoMapper {
     Integer insertMemo(Memo memo);
     Integer updateMemo(Memo memo);
     List<Memo> getAllMemos();
+    Integer deleteMemo(Integer id);
 }

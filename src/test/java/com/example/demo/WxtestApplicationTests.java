@@ -68,4 +68,8 @@ class WxtestApplicationTests {
         Memo memo = new Memo(0,2021, 4, 8, "title", "content", true);
         userMemoMapper.insertMemo(memo);
     }
+    @Test
+    void test6(){
+        System.out.println(userMemoMapper.getAllMemos());
+    }
 }

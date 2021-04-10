@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.UserMemoMapper">
-    <resultMap id="MemoResultMap" type="com.example.demo.pojo.Memo">
+    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Memo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="year" jdbcType="INTEGER" property="year"/>
         <result column="month" jdbcType="INTEGER" property="month"/>
@@ -10,16 +10,8 @@
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="istop" jdbcType="BIT" property="istop"/>
     </resultMap>
-    <select id="getAllMemos" resultMap="MemoResultMap" resultType="com.example.demo.pojo.Memo">
-        select * from memotable order by istop desc
-    </select>
-    <delete id="deleteMemo" parameterType="java.lang.Integer">
-        delete from memotable
-        where id = #{id}
-    </delete>
-    <update id="updateMemo" parameterType="com.example.demo.pojo.Memo">
-        update memotable
-        set title = #{title},content = #{content},istop = #{istop}
-        where id = #{id}
-    </update>
+    <insert id="insertMemo" parameterType="com.example.demo.pojo.Memo">
+        insert into memotable
+        values (#{id},#{year},#{month},#{day},#{title},#{content},#{istop})
+    </insert>
 </mapper>
