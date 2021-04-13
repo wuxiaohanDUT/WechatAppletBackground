@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.UserMemoMapper">
-    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Memo">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="year" jdbcType="INTEGER" property="year"/>
-        <result column="month" jdbcType="INTEGER" property="month"/>
-        <result column="day" jdbcType="INTEGER" property="day"/>
-        <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="istop" jdbcType="BIT" property="istop"/>
+<mapper namespace="com.example.demo.dao.UserDiaryMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Diary">
+        <id column="diary_id" jdbcType="INTEGER" property="id"/>
+        <result column="diary_content" jdbcType="VARCHAR" property="content"/>
+        <result column="diary_year" jdbcType="INTEGER" property="year"/>
+        <result column="diary_month" jdbcType="INTEGER" property="month"/>
+        <result column="diary_day" jdbcType="INTEGER" property="day"/>
+        <result column="diary_likes" jdbcType="INTEGER" property="likes"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="diary_address" jdbcType="VARCHAR" property="address"/>
+        <result column="diary_comments" jdbcType="INTEGER" property="comments"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="isprivate" jdbcType="BIT" property="isPrivate"/>
     </resultMap>
-    <insert id="insertMemo" parameterType="com.example.demo.pojo.Memo">
-        insert into memotable
-        values (#{id},#{year},#{month},#{day},#{title},#{content},#{istop})
+    <resultMap id="CommentMap" type="com.example.demo.pojo.Comment">
+        <id column="comment_id" jdbcType="INTEGER" property="id"/>
+        <result column="comment_likes" jdbcType="INTEGER" property="likes"/>
+        <result column="comment_year" jdbcType="INTEGER" property="year"/>
+        <result column="comment_month" jdbcType="INTEGER" property="month"/>
+        <result column="comment_day" jdbcType="INTEGER" property="day"/>
+        <result column="comment_content" jdbcType="VARCHAR" property="content"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="diary_id" jdbcType="INTEGER" property="diaryId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+    </resultMap>
+    <resultMap id="LikeMap" type="com.example.demo.pojo.Like">
+        <id column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <id column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <id column="diary_id" jdbcType="INTEGER" property="diaryId"/>
+        <id column="year" jdbcType="INTEGER" property="year"/>
+        <id column="month" jdbcType="INTEGER" property="month"/>
+        <id column="day" jdbcType="INTEGER" property="day"/>
+    </resultMap>
+    <select id="getAllDiaries" resultMap="BaseResultMap" resultType="com.example.demo.pojo.Diary">
+        select * from diarytable where isprivate = false
+    </select>
+    <select id="getPesonalDiaries" resultMap="BaseResultMap" resultType="com.example.demo.pojo.Diary">
+        select * from diarytable where user_id = #{id}
+    </select>
+    <select id="getCommentsByDiaryId" resultMap="CommentMap" resultType="com.example.demo.pojo.Comment" parameterType="java.lang.Integer">
+        select * from commenttable
+        where diary_id = #{id}
+    </select>
+    <select id="getCommentsByUserId" resultMap="CommentMap" resultType="com.example.demo.pojo.Comment" parameterType="java.lang.String">
+        select * from commenttable a
+        where a.diary_id in(
+            select b.diary_id
+            from diarytable b
+            where b.user_id = #{id})
+        order by a.diary_id
+    </select>
+    <insert id="insertDiary" parameterType="com.example.demo.pojo.Diary">
+        insert into diarytable
+        values (#{id},#{content},#{year},#{month},#{day},#{likes},#{userId},#{address},#{comments},#{userName},#{isPrivate})
     </insert>
+    <insert id="insertComment" parameterType="com.example.demo.pojo.Comment">
+        insert into commenttable
+        values (#{id},#{likes},#{year},#{month},#{day},#{content},#{userId},#{diaryId},#{userName})
+    </insert>
+    <insert id="insertLike" parameterType="com.example.demo.pojo.Like">
+        insert into liketable
+        values (#{userId},#{userName},#{diaryId},#{year},#{month},#{day})
+    </insert>
+    <update id="likeADiary" parameterType="java.lang.Integer">
+        update diarytable
+        set diary_likes = diary_likes + 1
+        where diary_id = #{id}
+    </update>
 </mapper>

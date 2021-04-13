@@ -6,7 +6,6 @@ import com.example.demo.pojo.Memo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController

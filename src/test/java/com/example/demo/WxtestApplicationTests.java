@@ -1,9 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.dao.UserBillsMapper;
+import com.example.demo.dao.UserDiaryMapper;
 import com.example.demo.dao.UserMemoMapper;
-import com.example.demo.pojo.Bill;
-import com.example.demo.pojo.Memo;
+import com.example.demo.pojo.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
@@ -27,6 +27,9 @@ class WxtestApplicationTests {
 
     @Resource
     private UserMemoMapper userMemoMapper;
+
+    @Resource
+    private UserDiaryMapper userDiaryMapper;
     @Test
     void contextLoads() {
         Date now = new Date();
@@ -71,5 +74,39 @@ class WxtestApplicationTests {
     @Test
     void test6(){
         System.out.println(userMemoMapper.getAllMemos());
+    }
+
+    @Test
+    void test7(){
+        System.out.println(userDiaryMapper.getAllDiaries());
+    }
+
+    @Test
+    void test8(){
+        userDiaryMapper.insertDiary(new Diary(0,"content",2020,3,21,64,"123456","江西九江",6,"AronWu",false));
+    }
+    @Test
+    void test9(){
+        userDiaryMapper.insertComment(new Comment(0,10,2020,10,1,"content","123456",1,"AronWu"));
+    }
+    @Test
+    void test10(){
+        System.out.println(userDiaryMapper.getCommentsByDiaryId(1));
+    }
+    @Test
+    void test11(){
+        System.out.println(userDiaryMapper.getCommentsByUserId("123456"));
+    }
+    @Test
+    void test12(){
+        userDiaryMapper.insertLike(new Like("123456","AronWu",1,2020,1,1));
+    }
+    @Test
+    void test13(){
+        System.out.println(userDiaryMapper.getPesonalDiaries("123456"));
+    }
+    @Test
+    void test14(){
+        userDiaryMapper.likeADiary(1);
     }
 }
